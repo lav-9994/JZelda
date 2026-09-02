@@ -1,0 +1,12 @@
+# Output di compilazione di Eclipse (rigenerato a ogni build)
+bin/
+
+# Javadoc generata (si rigenera con Project > Generate Javadoc)
+doc/
+
+# Impostazioni locali dell'workspace Eclipse
+.settings/
+
+# File di sistema Windows / OneDrive
+Thumbs.db
+desktop.ini
