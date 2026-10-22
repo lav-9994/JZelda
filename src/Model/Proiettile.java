@@ -3,9 +3,8 @@ package Model;
 import Config.GameConstants;
 
 /**
- * Classe che rappresenta un proiettile sparato da un boss a distanza.
- * Si muove in una direzione fissa e si disattiva quando colpisce Link
- * o esce dai bordi della mappa.
+ * Classe che rappresenta un proiettile sparato da un boss a distanza. Si muove in una direzione fissa, verso Link (meccanica presente 
+ * in BossDistanza non qui)  e si disattiva quando lo colpisce o esce dai bordi della mappa.
  */
 
 public class Proiettile {
@@ -14,11 +13,11 @@ public class Proiettile {
 
     /** Posizione y del proiettile. */
     private int y;
-    /** Larghezza del proiettile in pixel. */
-    private static final int WIDTH = 4;
+    /** Larghezza del proiettile in pixel di mondo. */
+    private static final int LARGHEZZA = 4;
 
-    /** Altezza del proiettile in pixel. */
-    private static final int HEIGHT = 4;
+    /** Altezza del proiettile in pixel di mondo. */
+    private static final int ALTEZZA = 4;
    
     /** Direzione di movimento del proiettile. */
     private Direzione direzione;
@@ -83,13 +82,48 @@ public class Proiettile {
         attivo = false;
     }
     
+    /**
+     * Restituisce la posizione x.
+     *
+     * @return la posizione x
+     */
     public int getX() { return x; }
+    /**
+     * Restituisce la posizione y.
+     *
+     * @return la posizione y
+     */
     public int getY() { return y; }
+    /**
+     * Restituisce il danno inflitto.
+     *
+     * @return il danno inflitto
+     */
     public int getDanno() { return danno; }
+    /**
+     * Restituisce la direzione verso cui e' rivolto.
+     *
+     * @return la direzione verso cui e' rivolto
+     */
     public Direzione getDirezione() { return direzione; }
+    /**
+     * Indica se e' ancora attivo.
+     *
+     * @return true se e' ancora attivo
+     */
     public boolean isAttivo() { return attivo; }
-    public int getWidth() { return WIDTH; }
-    public int getHeight() { return HEIGHT; }
+    /**
+     * Restituisce la larghezza in pixel di mondo.
+     *
+     * @return la larghezza in pixel di mondo
+     */
+    public int getLarghezza() { return LARGHEZZA; }
+    /**
+     * Restituisce l'altezza in pixel di mondo.
+     *
+     * @return l'altezza in pixel di mondo
+     */
+    public int getAltezza() { return ALTEZZA; }
 
 
 

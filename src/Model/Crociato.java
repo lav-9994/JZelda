@@ -9,7 +9,7 @@ public class Crociato extends BossMischia {
     private static final int DANNO = 2;
     private static final long COOLDOWN = 1500;
     
-    /**
+    /**costruttore di Crociato
      * @param x posizione iniziale x
      * @param y posizione iniziale y
      */

@@ -1,4 +1,5 @@
 package Model;
+
 /**
  * Classe che rappresenta il boss MostroTilapia.
  * Lancia pesci ogni 500ms per 3 secondi, poi pausa di 4 secondi.
@@ -21,9 +22,14 @@ public class MostroTilapia extends BossDistanza {
     
     /** Durata della pausa in ms. */
     private static final long DURATA_PAUSA = 4000;
+    /** Frame trascorsi dall'ultimo cambio di posa. */
     private int frameTimer = 0;
+
+    /** Posa corrente: true con le pinne aperte, false con le pinne chiuse. */
     private boolean pinneAperte = true;
-    private int yOffset = 0;
+
+    /** Frame che durano una posa prima di passare all'altra. */
+    private static final int FRAME_PER_POSA = 30;
     
     
 
@@ -35,22 +41,25 @@ public class MostroTilapia extends BossDistanza {
      */
     
     public MostroTilapia(int x, int y) {
-        super(x, y, VITA, DANNO, 16, 16,INTERVALLO_RAFFICA,DURATA_ATTACCO,DURATA_PAUSA);
+        super(x, y, VITA, DANNO, 24, 24, INTERVALLO_RAFFICA, DURATA_ATTACCO, DURATA_PAUSA);
        
     }
+    /**
+     * Fa avanzare l'animazione delle pinne.
+     * Va chiamato una volta per frame dal game loop.
+     */
     public void aggiorna() {
         frameTimer++;
-        if (frameTimer >= 30) {
+        if (frameTimer >= FRAME_PER_POSA) {
             frameTimer = 0;
             pinneAperte = !pinneAperte;
-            yOffset = pinneAperte ? 0 : -3;
         }
+    }
 
- 
-    
-    
-	
-
-}
-    public int getYOffset() { return yOffset; }
+    /**
+     * Indica se in questo momento la Tilapia ha le pinne aperte.
+     *
+     * @return true se in questo momento la Tilapia ha le pinne aperte
+     */
+    public boolean isPinneAperte() { return pinneAperte; }
 }

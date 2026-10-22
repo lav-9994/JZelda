@@ -1,7 +1,8 @@
 package Model;
 /**
- * Carota acquistabile nello shop.
- * Può essere usata per recuperare vita e hanno un'interazione con i conigli.
+ * Carota acquistabile nello shop. Sono l'equivalente delle pozioni nei giochi originali e mangiandone una viene ripristinata della vita.
+ * Ancora da realizzare nella view l'animazione di Link che mangia la carota. I coniglietti hanno un'interazione speciale con Link in base alla 
+ * presenza o meno della carota in inventario.
  */
 
 public class Carote implements Item {

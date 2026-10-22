@@ -15,7 +15,28 @@ public class Coniglietti extends Personaggio {
     
     /** Indica se il coniglietto è ancora attivo nella stanza. */
     private boolean attivo;
-    
+
+    /** True mentre il coniglietto compie un balzo, false durante la sosta. */
+    private boolean saltando;
+
+    /** Frame trascorsi nella fase corrente del saltello. */
+    private int contatoreSalto;
+
+    /** Durata di un balzo in frame. */
+    private static final int FRAME_SALTO = 12;
+
+    /** Durata della sosta fra un balzo e l'altro in frame. */
+    private static final int FRAME_PAUSA = 30;
+
+    /** Componente orizzontale della direzione di fuga: -1, 0 o 1. */
+    private int fugaX;
+
+    /** Componente verticale della direzione di fuga: -1, 0 o 1. */
+    private int fugaY;
+
+    /** Indica se la direzione di fuga e' gia' stata scelta. */
+    private boolean fugaDecisa;
+
     /**
      * Costruttore di Coniglietti.
      * Determina casualmente se il coniglietto è speciale.
@@ -29,10 +50,60 @@ public class Coniglietti extends Personaggio {
         this.speciale = false;
         this.attivo = true;
         this.direzione = Direzione.DESTRA;
+
+        Random random = new Random();
+        this.saltando = random.nextBoolean();
+        this.contatoreSalto = random.nextInt(saltando ? FRAME_SALTO : FRAME_PAUSA);
+
+        this.fugaDecisa = false;
+    }
+
+    /**
+     * Sceglie la direzione di fuga del coniglietto.
+     * Parte dal verso opposto a Link e ne tiene per ognuno solo una componente scelta a caso, cosi' il gruppo si apre a ventaglio invece di muoversi compatto.
+     *
+     * @param linkX posizione x di Link
+     * @param linkY posizione y di Link
+     */
+    private void decidiFuga(int linkX, int linkY) {
+        int viaX = (x < linkX) ? -1 : 1;
+        int viaY = (y < linkY) ? -1 : 1;
+
+        Random random = new Random();
+        switch (random.nextInt(3)) {
+            case 0:
+                fugaX = viaX;
+                fugaY = viaY;
+                break;
+            case 1:
+                fugaX = viaX;
+                fugaY = 0;
+                break;
+            default:
+                fugaX = 0;
+                fugaY = viaY;
+                break;
+        }
+        fugaDecisa = true;
+    }
+
+    /**
+     * Fa avanzare il ritmo del saltello, alternando balzo e sosta.
+     *
+     * @return true se in questo frame il coniglietto si sposta
+     */
+    private boolean avanzaSalto() {
+        contatoreSalto++;
+        int durata = saltando ? FRAME_SALTO : FRAME_PAUSA;
+        if (contatoreSalto >= durata) {
+            contatoreSalto = 0;
+            saltando = !saltando;
+        }
+        return saltando;
     }
     
     /**
-     * Movimento base — delegato ai metodi specifici dal Controller.
+     * Movimento base, delegato ai metodi specifici dal Controller.
      */
     @Override
     public void muovi() {
@@ -44,10 +115,13 @@ public class Coniglietti extends Personaggio {
      * @param linkY posizione y di Link
      */
     public void muoviLontanoDa(int linkX, int linkY) {
-        if (x < linkX) x -= GameConstants.VELOCITA_CONIGLIO;
-        else x += GameConstants.VELOCITA_CONIGLIO;
-        if (y < linkY) y -= GameConstants.VELOCITA_CONIGLIO;
-        else y += GameConstants.VELOCITA_CONIGLIO;
+        if (!fugaDecisa) decidiFuga(linkX, linkY);
+
+        if (fugaX != 0) direzione = (fugaX < 0) ? Direzione.SINISTRA : Direzione.DESTRA;
+        if (!avanzaSalto()) return;
+
+        x += fugaX * GameConstants.VELOCITA_CONIGLIO;
+        y += fugaY * GameConstants.VELOCITA_CONIGLIO;
     }
     /**
      * Muove il coniglietto verso Link (coniglietto speciale).
@@ -57,10 +131,13 @@ public class Coniglietti extends Personaggio {
      */
     
     public void muoviVerso(int linkX, int linkY) {
+        direzione = (x < linkX) ? Direzione.DESTRA : Direzione.SINISTRA;
+        if (!avanzaSalto()) return;
+
         if (x < linkX) x += GameConstants.VELOCITA_CONIGLIO;
-        else x -= GameConstants.VELOCITA_CONIGLIO;
+        else           x -= GameConstants.VELOCITA_CONIGLIO;
         if (y < linkY) y += GameConstants.VELOCITA_CONIGLIO;
-        else y -= GameConstants.VELOCITA_CONIGLIO;
+        else           y -= GameConstants.VELOCITA_CONIGLIO;
     }
     
     /**
@@ -79,22 +156,22 @@ public class Coniglietti extends Personaggio {
             if (random.nextInt(2) == 0) {
                 link.aggiungiVita();
                 setChanged();
-                notifyObservers("vita_bonus");
+                notifyObservers(Evento.VITA_BONUS);
             }
                
              else {
                 link.subisciDanno(GameConstants.DANNO_CONIGLIO);
                 setChanged();
-                notifyObservers("danno_coniglio");
+                notifyObservers(Evento.DANNO_CONIGLIO);
             }
         } else {
             link.subisciDanno(GameConstants.DANNO_CONIGLIO);
             setChanged();
-            notifyObservers("danno_coniglio");
+            notifyObservers(Evento.DANNO_CONIGLIO);
         }
         attivo = false;
         setChanged();
-        notifyObservers("disattivato");
+        notifyObservers(Evento.CONIGLIO_DISATTIVATO);
     }
     /**
      * Disattiva il coniglietto quando esce dalla stanza.
@@ -102,11 +179,26 @@ public class Coniglietti extends Personaggio {
     public void disattiva() {
         attivo = false;
         setChanged();
-        notifyObservers("disattivato");
+        notifyObservers(Evento.CONIGLIO_DISATTIVATO);
     }
     
+    /**
+     * Indica se e' il coniglietto speciale.
+     *
+     * @return true se e' il coniglietto speciale
+     */
     public boolean isSpeciale() { return speciale; }
+    /**
+     * Indica se e' ancora attivo.
+     *
+     * @return true se e' ancora attivo
+     */
     public boolean isAttivo() { return attivo; }
+    /**
+     * Segna questo coniglietto come speciale.
+     *
+     * @param speciale il nuovo valore
+     */
     public void setSpeciale(boolean speciale) { this.speciale = speciale; }
 }
 

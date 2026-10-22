@@ -5,11 +5,14 @@ import java.util.stream.Collectors;
 
 /**
  * Classe che rappresenta lo shop del gioco.
- * Appare tra un livello e l'altro e vende carote a Link.
+ * Appare alla conclusione di ogni livello. Al momento vende solo carote ma in futuro potrebbero esserci altri item.
  */
 
 public class Shop {
-	 /** Lista degli item disponibili nello shop. */
+	 /**
+	  * Catalogo di cio' che lo shop vende: dice quali item sono in vendita,
+	  * non quanti ce ne sono. Comprare non consuma il catalogo, quindi si possono acquistare infinite carote.
+	  */
     private List<Item> itemDisponibili;
     /** Prezzo di una carota in rupie. */
     public static final int PREZZO_CAROTA = 5;
@@ -21,23 +24,23 @@ public class Shop {
     public Shop() {
         itemDisponibili = new ArrayList<>();
         itemDisponibili.add(new Carote());
-        itemDisponibili.add(new Carote());
-        itemDisponibili.add(new Carote());
     }
-    
+
     /**
-     * Link acquista una carota se ha abbastanza rupie.
+     * Link acquista una carota se ha abbastanza rupie. L'effetto dell'item venduto non e' scritto qui: lo shop rimuove le rupie 
+     * 
+     *  dall'inventario di link e poi chiede
+     * all'item di applicarsi l'effetto. Cosi' per mettere in vendita qualcos'altro
+     * basta aggiungerlo al catalogo, senza toccare questo metodo.
      *
      * @param link il personaggio principale
      * @return true se l'acquisto è andato a buon fine
      */
     public boolean acquista(Link link) {
-        if (link.getRupie() >= PREZZO_CAROTA) {
-            link.rimuoviRupie(PREZZO_CAROTA);
-            link.aggiungiCarote(1);
-            return true;
-        }
-        return false;
+        if (itemDisponibili.isEmpty() || link.getRupie() < PREZZO_CAROTA) return false;
+        link.rimuoviRupie(PREZZO_CAROTA);
+        itemDisponibili.get(0).applicaEffetto(link);
+        return true;
     }
     /**
      * Restituisce gli item disponibili nello shop usando Stream.

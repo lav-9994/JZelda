@@ -101,31 +101,68 @@ public class GameView extends JFrame implements Observer {
 
     /**
      * Riceve le notifiche dal Model e aggiorna la View di conseguenza.
+     * Solo pochi eventi richiedono di cambiare pannello o di modificare una  schermata: 
+     * tutti gli altri, come il movimento o la vita che cala, traducono in un ridisegno del gioco, ed e' quello che fa l'ultimo ramo.
+     * Alla schermata di vittoria non si arriva da qui ma dal Controller, che la mostra direttamente quando finisce l'ottavo livello.
      *
      * @param o   il Model che ha notificato
-     * @param arg stringa che identifica il tipo di aggiornamento
+     * @param arg l'evento, una costante di Evento
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof String) {
-            switch ((String) arg) {
-                case "game_over"               -> mostraPanel("GAME_OVER");
-                case "vittoria"                -> mostraPanel("VITTORIA");
-                case "rupie"                   -> shopPanel.aggiorna();
-                case "profilo", "statistiche"  -> {
+        if (arg instanceof Evento evento) {
+            switch (evento) {
+                case GAME_OVER            -> mostraPanel("GAME_OVER");
+                case RUPIE                -> shopPanel.aggiorna();
+                case PROFILO, STATISTICHE -> {
                     profilePanel.aggiorna();
                     leaderboardPanel.aggiorna();
                 }
-                default                        -> gamePanel.repaint();
+                default                   -> gamePanel.repaint();
             }
         }
     }
 
+    /**
+     * Restituisce il pannello di gioco.
+     *
+     * @return il pannello di gioco
+     */
     public GamePanel getGamePanel() { return gamePanel; }
+    /**
+     * Restituisce il pannello dello shop.
+     *
+     * @return il pannello dello shop
+     */
     public ShopPanel getShopPanel() { return shopPanel; }
+    /**
+     * Restituisce il pannello dei profili.
+     *
+     * @return il pannello dei profili
+     */
     public ProfilePanel getProfilePanel() { return profilePanel; }
+    /**
+     * Restituisce il pannello della classifica.
+     *
+     * @return il pannello della classifica
+     */
     public LeaderboardPanel getLeaderboardPanel() { return leaderboardPanel; }
+    /**
+     * Restituisce il pannello di game over.
+     *
+     * @return il pannello di game over
+     */
     public GameOverPanel getGameOverPanel() { return gameOverPanel; }
+    /**
+     * Restituisce il pannello del menu.
+     *
+     * @return il pannello del menu
+     */
     public MenuPanel getMenuPanel() { return menuPanel; }
+    /**
+     * Restituisce il pannello della vittoria.
+     *
+     * @return il pannello della vittoria
+     */
     public VittoriaPanel getVittoriaPanel() { return vittoriaPanel; }
 }

@@ -65,6 +65,16 @@ public class ShopPanel extends JPanel {
         lblRupie.setText("Rupie: " + link.getRupie());
     }
 
+    /**
+     * Restituisce il pulsante Acquista Carota.
+     *
+     * @return il pulsante Acquista Carota
+     */
     public JButton getBtnAcquistaCarota() { return btnAcquistaCarota; }
+    /**
+     * Restituisce il pulsante Continua.
+     *
+     * @return il pulsante Continua
+     */
     public JButton getBtnContinua() { return btnContinua; }
 }

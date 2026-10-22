@@ -1,6 +1,6 @@
 package Model;
 /**
- * Classe astratta che rappresenta una spada.
+ * Classe astratta che rappresenta una spada impugnata da link.
  * Definisce il danno base e il nome della spada.
  */
 
@@ -21,6 +21,11 @@ public abstract class Spada implements Item {
         this.nome = nome;
         this.danno = danno;
     }
+    /**
+     * Restituisce il danno inflitto.
+     *
+     * @return il danno inflitto
+     */
     public int getDanno() { return danno; }
 
     @Override

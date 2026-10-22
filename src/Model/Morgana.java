@@ -1,5 +1,10 @@
 package Model;
 
+/**
+ * Boss a distanza del livello 6.
+ * Spara raffiche molto fitte, un proiettile ogni decimo di secondo,
+ * alternate a pause di due secondi.
+ */
 public class Morgana extends BossDistanza {
 
     /** Punti vita di Morgana. */

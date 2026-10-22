@@ -1,8 +1,7 @@
 package Model;
 /**
  * Classe astratta che rappresenta un nemico del gioco.
- * Estende Personaggio e definisce il comportamento base dei nemici,
- * incluso il drop di rupie alla morte.
+ * Estende Personaggio e definisce il comportamento base dei nemici, tra cui il drop di rupie alla morte.
  */
 public abstract class Nemico extends Personaggio {
 	    /** Indica se il nemico è ancora vivo. */
@@ -14,11 +13,11 @@ public abstract class Nemico extends Personaggio {
      * @param y             posizione iniziale y
      * @param vita          punti vita
      * @param danno         danno inflitto
-     * @param width         larghezza in pixel
-     * @param height        altezza in pixel
+     * @param larghezza         larghezza in pixel di mondo
+     * @param altezza        altezza in pixel di mondo
      */
-    public Nemico(int x, int y, int vita, int danno, int width, int height) {
-        super(x, y, vita, danno, width, height);
+    public Nemico(int x, int y, int vita, int danno, int larghezza, int altezza) {
+        super(x, y, vita, danno, larghezza, altezza);
                 this.vivo = true;
     }
     
@@ -44,6 +43,11 @@ public abstract class Nemico extends Personaggio {
     public void subisciDanno(int danno) {
         super.subisciDanno(danno);
     }
+    /**
+     * Indica se la morte non e' ancora stata notificata.
+     *
+     * @return true se la morte non e' ancora stata notificata
+     */
     public boolean isVivoFlag() { return vivo; }
 
 

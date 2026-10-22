@@ -16,7 +16,6 @@ public class JZelda {
      * @param args argomenti da linea di comando (non utilizzati)
      */
     public static void main(String[] args) {
-    	System.out.println(new java.io.File("res/audio/dungeon.wav").getAbsolutePath());
     	Link link = new Link(128, 88);
         Profilo profilo = new Profilo("res/profili.csv");
 

@@ -42,15 +42,15 @@ public abstract class BossDistanza extends Nemico implements SpawnaConiglietti {
      * @param y                posizione iniziale y
      * @param vita             punti vita
      * @param danno            danno inflitto dai proiettili
-     * @param width            larghezza in pixel
-     * @param height           altezza in pixel
+     * @param larghezza            larghezza in pixel di mondo
+     * @param altezza           altezza in pixel di mondo
      * @param intervalloRaffica millisecondi tra un proiettile e l'altro
      * @param durataAttacco    durata della fase di attacco in ms
      * @param durataPausa      durata della pausa in ms
      */
-    public BossDistanza(int x, int y, int vita, int danno, int width, int height,
+    public BossDistanza(int x, int y, int vita, int danno, int larghezza, int altezza,
             long intervalloRaffica, long durataAttacco, long durataPausa) {
-    	 super(x, y, vita, danno, width, height);
+    	 super(x, y, vita, danno, larghezza, altezza);
          this.proiettili = new ArrayList<>();
          this.ultimoAttacco = 0;
          this.intervalloRaffica = intervalloRaffica;
@@ -60,11 +60,22 @@ public abstract class BossDistanza extends Nemico implements SpawnaConiglietti {
          this.tempoInizioFase = System.currentTimeMillis();
      }
     /**
-     * Movimento base — gestito dal Controller.
+     * Movimento base, gestito dal Controller.
      */
     @Override
     public void muovi() {
-    	
+
+    }
+
+    /**
+     * Fa ripartire il ciclo raffica/pausa dall'inizio.
+     * Va chiamato quando Link entra nell'arena: il cronometro parte alla costruzione del livello, quindi senza questo il boss 
+     * si troverebbe la fase di attacco gia' scaduta e resterebbe fermo per tutta la pausa prima del primo colpo.
+     */
+    public void iniziaCombattimento() {
+        this.faseAttacco = true;
+        this.tempoInizioFase = System.currentTimeMillis();
+        this.ultimoAttacco = 0;
     }
 
     
@@ -119,11 +130,21 @@ public abstract class BossDistanza extends Nemico implements SpawnaConiglietti {
         if (!isVivo() && vivo) {
             vivo = false;
             setChanged();
-            notifyObservers("morte_boss_distanza");
+            notifyObservers(Evento.MORTE_BOSS_DISTANZA);
         }
     }
 
+    /**
+     * Indica se il boss e' nella fase di attacco.
+     *
+     * @return true se il boss e' nella fase di attacco
+     */
     public boolean isFaseAttacco() { return faseAttacco; }
+    /**
+     * Restituisce la lista dei proiettili sparati.
+     *
+     * @return la lista dei proiettili sparati
+     */
     public List<Proiettile> getProiettili() { return proiettili; }
 
     }

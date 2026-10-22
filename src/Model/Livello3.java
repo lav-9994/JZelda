@@ -1,22 +1,25 @@
 package Model;
+
 /**
  * Livello 3 del gioco. Boss: Vespasiano.
  */
 public class Livello3 extends Livello {
 
+    /**
+     * Costruttore di Livello3.
+     * Il costruttore della superclasse carica la mappa e chiama inizializza().
+     */
     public Livello3() { super(3); }
 
     @Override
     protected void inizializza() {
-        stanze.get(0).add(NemicoFactory.creaNemico(3, 50, 50));
-        stanze.get(0).add(NemicoFactory.creaNemico(3, 150, 100));
-        stanze.get(0).add(NemicoFactory.creaNemico(3, 100, 130));
+        minion.add(NemicoFactory.creaNemico(3, 32, 96));
+        minion.add(NemicoFactory.creaNemico(3, 176, 144));
 
-        stanze.get(1).add(NemicoFactory.creaNemico(3, 80, 60));
-        stanze.get(1).add(NemicoFactory.creaNemico(3, 160, 80));
-        stanze.get(1).add(NemicoFactory.creaNemico(3, 120, 120));
+        minion.add(NemicoFactory.creaNemico(3, 288, 112));
+        minion.add(NemicoFactory.creaNemico(3, 416, 48));
 
-        boss = new Vespasiano(128, 88);
+        boss = new Vespasiano(640, 88);
     }
 
 }

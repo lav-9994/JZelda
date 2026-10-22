@@ -4,8 +4,7 @@ import java.util.Random;
 import Config.GameConstants;
 
 /**
- * Classe che rappresenta i nemici minori presenti nelle prime due stanze
- * di ogni dungeon. Si muove a croce attorno alla posizione iniziale.
+ * Classe che rappresenta i mnion presenti nelle prime due schermate di ogni dungeon. Si muove a croce attorno alla posizione iniziale.
  * Alla morte droppa da 1 a 3 rupie casualmente.
  */
 public class NemicoBase extends Nemico {
@@ -27,6 +26,15 @@ public class NemicoBase extends Nemico {
     /** Generatore di numeri casuali per il drop delle rupie. */
     private Random random;
 
+    /** Conta i frame trascorsi dall'ultimo spostamento. */
+    private int contatoreFrame = 0;
+
+    /**
+     * Rupie che questo nemico lascia a terra morendo, generate casualmente nel momento in cui muore. 
+    
+     */
+    private int rupieRilasciate = 0;
+
     /**
      * Costruttore di NemicoBase.
      *
@@ -43,10 +51,39 @@ public class NemicoBase extends Nemico {
     }
 
     /**
+     * Fa avanzare il contatore e dice se in questo frame il nemico
+     * deve compiere un passo.
+     *
+     * @return true se è il momento di agire
+     */
+    private boolean tempoDiMuoversi() {
+        contatoreFrame++;
+        if (contatoreFrame < GameConstants.FRAME_PER_PASSO_NEMICO) return false;
+        contatoreFrame = 0;
+        return true;
+    }
+
+    /**
+     * Reagisce a uno spostamento negato da un ostacolo. Se il nemico stava andando verso l'esterno inizia a tornare, come se
+     * avesse raggiunto il limite del suo raggio.
+     * Se stava già tornando resta fermo ad aspettare: la strada era libera all'andata, quindi ciò che lo blocca è per forza qualcosa che si muove
+     * e prima o poi si toglierà.
+     */
+    public void rimbalza() {
+        if (!tempoDiMuoversi()) return;
+
+        if (!ritorno) ritorno = true;
+    }
+
+    /**
      * Muove il nemico a croce attorno alla posizione iniziale.
+     * Lo spostamento avviene solo ogni FRAME_PER_PASSO_NEMICO frame,
+     * per ottenere un movimento più lento di un pixel di mondo per frame.
      */
     @Override
     public void muovi() {
+        if (!tempoDiMuoversi()) return;
+
         Direzione dir = ciclo[faseCorrente];
 
         if (!ritorno) {
@@ -116,9 +153,16 @@ public class NemicoBase extends Nemico {
         super.subisciDanno(danno);
         if (!isVivo() && vivo) {
             vivo = false;
-            int rupie = random.nextInt(3) + 1;
+            rupieRilasciate = random.nextInt(3) + 1;
             setChanged();
-            notifyObservers("morte:" + rupie);
+            notifyObservers(Evento.MORTE_NEMICO);
         }
     }
+
+    /**
+     * Restituisce quante rupie ha lasciato morendo.
+     *
+     * @return le rupie lasciate, da 1 a 3, oppure 0 se e' ancora vivo
+     */
+    public int getRupieRilasciate() { return rupieRilasciate; }
 }

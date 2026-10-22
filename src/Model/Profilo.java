@@ -52,7 +52,7 @@ public class Profilo extends Observable {
             e.printStackTrace();
         }
         setChanged();
-        notifyObservers("profilo");
+        notifyObservers(Evento.PROFILO);
     }
     
     /**
@@ -81,7 +81,7 @@ public class Profilo extends Observable {
             e.printStackTrace();
         }
         setChanged();
-        notifyObservers("statistiche");
+        notifyObservers(Evento.STATISTICHE);
     }
     /**
      * Legge tutti i profili dal CSV.
@@ -153,10 +153,35 @@ public class Profilo extends Observable {
             this.vinte = vinte;
             this.perse = perse;
         }
+        /**
+         * Restituisce il nickname del profilo.
+         *
+         * @return il nickname del profilo
+         */
         public String getNickname() { return nickname; }
+        /**
+         * Restituisce il file dell'avatar scelto.
+         *
+         * @return il file dell'avatar scelto
+         */
         public String getAvatar() { return avatar; }
+        /**
+         * Restituisce il numero di partite giocate.
+         *
+         * @return il numero di partite giocate
+         */
         public int getGiocate() { return giocate; }
+        /**
+         * Restituisce il numero di partite vinte.
+         *
+         * @return il numero di partite vinte
+         */
         public int getVinte() { return vinte; }
+        /**
+         * Restituisce il numero di partite perse.
+         *
+         * @return il numero di partite perse
+         */
         public int getPerse() { return perse; }
     }
 

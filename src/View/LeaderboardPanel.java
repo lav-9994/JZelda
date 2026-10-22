@@ -74,5 +74,10 @@ public class LeaderboardPanel extends JPanel {
         }
     }
 
+    /**
+     * Restituisce il pulsante Indietro.
+     *
+     * @return il pulsante Indietro
+     */
     public JButton getBtnIndietro() { return btnIndietro; }
 }

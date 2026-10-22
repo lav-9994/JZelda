@@ -1,8 +1,8 @@
 package Model;
 /**
- * Factory per la creazione dei nemici base.
- * Scala vita e danno in base al livello corrente.
- * Applica il pattern Factory Method centralizzando la creazione dei nemici.
+ * Factory per la creazione dei minion.
+ * Centralizza la politica di scalatura della difficolta': la formula che lega il numero di livello a vita e danno sta qui e 
+ * non ripetuta negli otto livelli.
  */
 public class NemicoFactory {
 	/**
@@ -18,5 +18,10 @@ public class NemicoFactory {
 	        int danno = 1 + (livello / 3);
 	        return new NemicoBase(x, y, vita, danno);
 	    }
+
+	 /**
+	  * Costruttore privato: la classe espone solo il metodo statico di creazione e non va istanziata.
+	  */
+	 private NemicoFactory() { }
 
 }

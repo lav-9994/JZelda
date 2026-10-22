@@ -9,8 +9,7 @@ public enum GameState {
 	    GIOCO,
 	    /** Shop tra un livello e l'altro. */
 	    SHOP,
-	    /** Gioco in pausa. */
-	    PAUSA,
+	   
 	    /** Schermata di game over. */
 	    GAME_OVER,
 	    /** Schermata di vittoria. */

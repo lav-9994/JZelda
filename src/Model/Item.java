@@ -1,7 +1,6 @@
 package Model;
 /**
- * Interfaccia che rappresenta un item del gioco.
- * Ogni item ha un nome e un effetto applicabile su Link.
+ * Interfaccia per gli item del gioco. Ogni item ha un nome e un effetto applicabile su Link.
  */
 
 public interface Item {

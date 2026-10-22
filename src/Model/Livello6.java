@@ -5,22 +5,21 @@ package Model;
  */
 public class Livello6 extends Livello {
 
+    /**
+     * Costruttore di Livello6.
+     * Il costruttore della superclasse carica la mappa e chiama inizializza().
+     */
     public Livello6() { super(6); }
 
     @Override
     protected void inizializza() {
-        stanze.get(0).add(NemicoFactory.creaNemico(6, 50, 50));
-        stanze.get(0).add(NemicoFactory.creaNemico(6, 150, 100));
-        stanze.get(0).add(NemicoFactory.creaNemico(6, 100, 130));
-        stanze.get(0).add(NemicoFactory.creaNemico(6, 200, 70));
-        stanze.get(0).add(NemicoFactory.creaNemico(6, 60, 100));
+        minion.add(NemicoFactory.creaNemico(6, 96, 32));
+        minion.add(NemicoFactory.creaNemico(6, 192, 144));
 
-        stanze.get(1).add(NemicoFactory.creaNemico(6, 80, 60));
-        stanze.get(1).add(NemicoFactory.creaNemico(6, 160, 80));
-        stanze.get(1).add(NemicoFactory.creaNemico(6, 120, 120));
-        stanze.get(1).add(NemicoFactory.creaNemico(6, 60, 140));
-        stanze.get(1).add(NemicoFactory.creaNemico(6, 200, 110));
+        minion.add(NemicoFactory.creaNemico(6, 400, 32));
+        minion.add(NemicoFactory.creaNemico(6, 304, 144));
 
-        boss = new Morgana(128, 88);
+        boss = new Morgana(640, 88);
     }
+
 }
